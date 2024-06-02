@@ -1,0 +1,1 @@
+Repository for studying Python API frameworks (currently FastAPI)
