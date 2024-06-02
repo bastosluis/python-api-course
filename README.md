@@ -1,1 +1,1 @@
-Repository for studying Python API frameworks (currently FastAPI)
+Repository for studying Python API frameworks (currently FastAPI). Currently going through an Udemy course.
