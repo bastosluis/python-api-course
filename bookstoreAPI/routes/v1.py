@@ -1,11 +1,11 @@
 from fastapi import FastAPI, Body, File, Response
-from starlette.status import HTTP_201_CREATED
-from models.user import User
-from models.author import Author
-from models.book import Book
-
+from bookstoreAPI.models.user import User
+from bookstoreAPI.models.author import Author
+from bookstoreAPI.models.book import Book
+from ..utils.security import *
 
 app_v1 = FastAPI(openapi_prefix="/v1")
+
 
 @app_v1.post("/user", status_code=HTTP_201_CREATED)
 async def post_user(user: User):
@@ -48,3 +48,18 @@ async def upload_user_photo(response: Response, profile_photo: bytes = File(...)
     response.headers["x-file-size"] = str(len(profile_photo))
     response.set_cookie(key="cookie-api", value="test")
     return {"file size": len(profile_photo)}
+
+@app_v1.post("/token")
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    jwt_user_dict = {"username" : form_data.username, 
+                     "password": form_data.password,
+                     "disabled": False,
+                     "role": "admin"}
+    jwt_user = JWTUser(**jwt_user_dict)
+    user = authenticate_user(jwt_user)
+
+    if user is None:
+        raise HTTPException(status_code=HTTP_401_UNAUTHORIZED)
+    
+    jwt_token = create_jwt_token(user)
+    return {"token": jwt_token}

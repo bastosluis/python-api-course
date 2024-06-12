@@ -7,7 +7,7 @@ class Role(Enum):
     personel: str = "personel"
 
 class User(BaseModel):
-    name: str
+    username: str
     password: str
-    email: str = Query(..., regex="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
-    role: Role
+    # email: str = Query(..., regex="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
+    # role: Role
